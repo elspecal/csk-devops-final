@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b
+  namespace: apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: service-b }
+  template:
+    metadata:
+      labels: { app: service-b }
+    spec:
+      containers:
+        - name: service-b
+          image: 362099375729.dkr.ecr.eu-west-3.amazonaws.com/service-b:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet: { path: /health, port: 8080 }
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+  namespace: apps
+spec:
+  selector:
+    app: service-b
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,46 @@
+project = "csepella-eks-reverse-proxy"
+owner   = "Miklós Csepella"
+region  = "eu-west-3"
+
+vpc = {
+  cidr = "10.0.0.0/16"
+  subnets = [
+    { name = "public-1", cidr = "10.0.1.0/24", az = "a", type = "public" },
+    { name = "public-2", cidr = "10.0.2.0/24", az = "b", type = "public" },
+    { name = "public-3", cidr = "10.0.3.0/24", az = "c", type = "public" },
+    { name = "private-1", cidr = "10.0.4.0/24", az = "a", type = "private" },
+    { name = "private-2", cidr = "10.0.5.0/24", az = "b", type = "private" },
+    { name = "private-3", cidr = "10.0.6.0/24", az = "c", type = "private" },
+  ]
+}
+
+eks_cluster = {
+  # lower if not yet available in the region
+  version = "1.37"
+  name    = "csepella-eks-task"
+
+  # all subnets: control plane ENIs + NLB placement pool
+  subnets = ["public-1", "public-2", "public-3", "private-1", "private-2", "private-3"]
+
+  node_groups = [
+    {
+      name    = "nginx-proxy-nodes"
+      subnets = ["private-1", "private-2", "private-3"]
+      labels  = {}
+    }
+  ]
+}
+
+# empty image_tag skips build/push; set to e.g. "1.0" once ./apps/<name> exists
+ecr_registries = [
+  {
+    name       = "service-a"
+    image_path = "./apps/service-a"
+    image_tag  = "1.0"
+  },
+  {
+    name       = "service-b"
+    image_path = "./apps/service-b"
+    image_tag  = "1.0"
+  },
+]
