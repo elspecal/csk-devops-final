@@ -22,10 +22,16 @@ data "aws_iam_policy_document" "gha_trust" {
       values   = ["sts.amazonaws.com"]
     }
 
+    # GitHub's sub includes the owner/repo IDs on newer repos:
+    #   repo:<owner>@<owner-id>/<repo>@<repo-id>:ref:refs/heads/main
+    # accept both that and the classic format, scoped to this repo + main
     condition {
-      test     = "StringEquals"
+      test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:elspecal/csk-devops-final:ref:refs/heads/main"]
+      values = [
+        "repo:elspecal/csk-devops-final:ref:refs/heads/main",
+        "repo:elspecal@*/csk-devops-final@*:ref:refs/heads/main",
+      ]
     }
   }
 }
