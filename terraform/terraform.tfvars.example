@@ -27,16 +27,12 @@ eks_cluster = {
   ]
 }
 
-# empty image_tag skips build/push
+# images are built and pushed by .github/workflows/build-and-push.yml
 ecr_registries = [
   {
-    name       = "service-a"
-    image_path = "./apps/service-a"
-    image_tag  = ""
+    name = "service-a"
   },
   {
-    name       = "service-b"
-    image_path = "./apps/service-b"
-    image_tag  = ""
+    name = "service-b"
   },
 ]

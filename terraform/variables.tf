@@ -42,11 +42,9 @@ variable "eks_cluster" {
 }
 
 variable "ecr_registries" {
-  description = "ECR repositories to create. Leave image_tag empty to skip the build/push step."
+  description = "ECR repositories to create. Images are built and pushed by CI."
   type = list(object({
-    name       = string
-    image_path = string
-    image_tag  = string
+    name = string
   }))
   default = []
 }

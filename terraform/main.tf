@@ -38,6 +38,4 @@ module "ecr" {
 
   region          = var.region
   repository_name = each.value.name
-  image_path      = each.value.image_path
-  image_tag       = each.value.image_tag
 }
