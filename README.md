@@ -11,6 +11,7 @@ Two Flask services behind an nginx reverse proxy on EKS. Everything is built and
 | `terraform/` | VPC, EKS cluster, node group, ECR repos, load balancer controller, and the GitHub Actions OIDC role |
 | `.github/workflows/build-and-push.yml` | On push to `main` touching `src/**` or `k8s/**`: builds both images, pushes to ECR tagged with the commit SHA (plus `latest`), then deploys to the cluster with kubectl |
 | `.github/workflows/terraform-apply.yml` | On push to `main` touching `terraform/**`: `terraform apply -auto-approve` against S3 remote state (lockfile locking) |
+| `docs/oidc-debugging.md` | How the CI authentication was debugged: the `sub` format change, the bootstrap deadlock, the unpushed-commit revert loop, access entry imports |
 
 Normal operation needs nothing from you: push to `main` and the right workflow runs. Both can also be triggered manually from the Actions tab.
 
