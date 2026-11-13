@@ -5,12 +5,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/**'
-      - 'k8s/**'
+      - "src/**"
+      - "k8s/**"
   workflow_dispatch: # manual run: handy for re-pushing images
 
 permissions:
-  id-token: write   # OIDC: the job gets a short-lived token, no access keys
+  id-token: write # OIDC: the job gets a short-lived token, no access keys
   contents: read
 
 jobs:
@@ -22,10 +22,10 @@ jobs:
         service: [service-a, service-b]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
@@ -50,10 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}

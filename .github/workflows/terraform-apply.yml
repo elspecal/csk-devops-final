@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'terraform/**'
+      - "terraform/**"
   workflow_dispatch:
 
 # never run two applies at once (state locking handles races, this avoids them)
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  id-token: write   # OIDC: the job gets a short-lived token, no access keys
+  id-token: write # OIDC: the job gets a short-lived token, no access keys
   contents: read
 
 jobs:
@@ -25,19 +25,19 @@ jobs:
         working-directory: terraform
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           # >= 1.10 for S3 lockfile locking; pinned to the version used locally
-          terraform_version: '1.15.9'
+          terraform_version: "1.15.9"
 
       - name: Terraform Init
         run: terraform init -reconfigure
